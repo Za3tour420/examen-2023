@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="/css/layout.css">
+    <header>
+      <a class="home" id="home" href="/messages">Messages List</a>
+      <a class="add" id="add" href="/messages/create">Add Message</a>
+      <a class="chat" id="chat" href="/messages/chat">Chat</a>
+    </header>
+    {% block head %}{% endblock %}
+  </head>
+  <body>
+    {% block body %}{% endblock %}
+  </body>
+</html>

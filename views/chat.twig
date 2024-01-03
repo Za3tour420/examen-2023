@@ -1,0 +1,61 @@
+{% extends 'layout.twig' %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/addUpdateContact.css">
+{% endblock %}
+
+{% block body %}
+<script src="/socket.io/socket.io.js"></script>
+<div class="add-contact-form">
+    <h2>{{title}}</h2>
+    <form onsubmit="sendMessage(event)">
+        <label for="FullName">Pseudo</label>
+        <input type="text" id="FullName" name="Pseudo" placeholder="Add a pseudo"/>
+        <label for="Phone">Content</label>
+        <input type="text" id="Phone" name="Content" placeholder="Add content"/>
+        <input type="submit" value="Send"/>
+    </form>
+
+    <div id="messages"></div>
+
+    <script>
+        var pseudoInput = document.getElementById('FullName');
+        var contentInput = document.getElementById('Phone');
+        var messagesContainer = document.getElementById('messages');
+        var socket = io();
+
+        // Listen for incoming messages
+        socket.on("msg", (data) => {
+            var p = document.createElement('p');
+            p.innerHTML = data.Pseudo + ": " + data.Content;
+            messagesContainer.append(p);
+        });
+
+        // Listen for incoming typing notifications
+        socket.on("msg-typing", (data) => {
+            var p = document.createElement('p');
+            p.innerHTML = data.Pseudo;
+            messagesContainer.append(p);
+            setTimeout(() => {
+                p.style.display = "none";
+            }, 500);
+        });
+
+        // Emit a message when the form is submitted
+        function sendMessage(event) {
+            event.preventDefault();
+            var pseudo = pseudoInput.value;
+            var content = contentInput.value;
+            var message = pseudo + ": " + content;
+            socket.emit("send-msg", { Pseudo: pseudo, Content: content });
+        }
+
+        // Emit a typing notification
+        function isTyping() {
+            var data = "Someone is typing...";
+            console.log(data);
+            socket.emit("uTyping", data);
+        }
+    </script>
+</div>
+{% endblock %}

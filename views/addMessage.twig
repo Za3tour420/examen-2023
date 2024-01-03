@@ -1,0 +1,19 @@
+{% extends 'layout.twig' %}
+
+{% block head %}
+  <link rel="stylesheet" href="/css/addUpdateContact.css">
+{% endblock %}
+
+{% block body %}
+<div class="add-contact-form">
+    <h2>{{title}}</h2>
+    <form action="/messages/create" method="POST">
+        <label for="FullName">Pseudo</label>
+        <input type="text" id="FullName" name="Pseudo" placeholder="Add a pseudo"/>
+        <label for="Phone">Content</label>
+        <input type="text" id="Phone" name="Content" placeholder="Add content"/>
+        <input type="submit" value="Add"/>
+        <a href="/messages" class="cancel-link">Cancel</a>
+    </form>
+</div>
+{% endblock %}
